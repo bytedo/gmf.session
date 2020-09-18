@@ -1,12 +1,12 @@
-![module info](https://nodei.co/npm/@gm5/controller.png?downloads=true&downloadRank=true&stars=true)
+![module info](https://nodei.co/npm/@gm5/session.png?downloads=true&downloadRank=true&stars=true)
 
-# @gm5/controller
+# @gm5/session
 
-> 控制器基类。
+> 会话中间件。
 
 ## 安装
 
 ```bash
-npm install @gm5/controller
+npm install @gm5/session
 ```
 
