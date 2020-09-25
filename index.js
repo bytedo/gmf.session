@@ -9,8 +9,8 @@ import { uuid, sha1 } from 'crypto.js'
 import RedisStore from './lib/redis-store.js'
 import MemStore from './lib/mem-store.js'
 
-// 会话储存器
-export const sessionStore = {
+// 会话安装包
+export const sessionPackage = {
   name: 'session',
   install() {
     var session = this.get('session')
@@ -25,9 +25,10 @@ export const sessionStore = {
 }
 
 // 会话中间件
-export function sessionWare(req, res, next) {
+export function sessionConnect(req, res, next) {
   var opt = this.get('session')
-  var jwt = this.get('jwt')
+  var cache = req.cookie('NODESSID')
+  var deviceID = ''
   var ssid
 
   // options请求不处理会话
@@ -35,45 +36,35 @@ export function sessionWare(req, res, next) {
     return next()
   }
 
-  // jwt模式的校验不在这里处理
-  if (jwt) {
-    var auth = req.header('authorization')
-    if (auth) {
-      ssid = auth.split('.').pop()
-      this.$$session.start(ssid)
+  // 校验UA
+  if (opt.level & 2) {
+    deviceID += req.header('user-agent')
+  }
+
+  // 校验IP
+  if (opt.level & 4) {
+    deviceID += req.ip()
+  }
+
+  if (deviceID) {
+    deviceID = sha1(deviceID)
+
+    // ssid 最后16位是指纹
+    if (cache) {
+      if (cache.slice(-16) === deviceID.slice(-16)) {
+        ssid = cache
+      } else {
+        ssid = uuid('') + deviceID.slice(-16)
+      }
     }
   } else {
-    var cache = req.cookie('NODESSID')
-    var deviceID = ''
-
-    // 校验UA
-    if (opt.level & 2) {
-      deviceID += req.header('user-agent')
-    }
-
-    // 校验IP
-    if (opt.level & 4) {
-      deviceID += req.ip()
-    }
-
-    if (deviceID) {
-      deviceID = sha1(deviceID)
-
-      // ssid 最后16位是指纹
-      if (cache) {
-        if (cache.slice(-16) === deviceID.slice(-16)) {
-          ssid = cache
-        } else {
-          ssid = uuid('') + deviceID.slice(-16)
-        }
-      }
-    } else {
-      ssid = cache || sha1(uuid())
-    }
-
-    res.cookie('NODESSID', ssid)
-    this.$$session.start(ssid)
+    ssid = cache || sha1(uuid())
   }
+
+  res.cookie('NODESSID', ssid, { maxAge: opt.ttl, domain: opt.domain })
+  // 缓存ssid到req上
+  req.ssid = ssid
+  this.$$session.start(ssid)
 
   next()
 }
