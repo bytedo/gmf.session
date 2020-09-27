@@ -2,7 +2,7 @@
 
 # @gm5/session
 
-> 会话中间件。
+> 会话拓展包。
 
 ## 安装
 
@@ -10,3 +10,14 @@
 npm install @gm5/session
 ```
 
+## 使用
+
+```js
+import { sessionPackage, sessionConnect } from '@gm5/session'
+
+app.install(sessionPackage)
+
+app.use(sessionConnect)
+
+
+```

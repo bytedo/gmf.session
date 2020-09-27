@@ -4,7 +4,7 @@
   "type": "module",
   "description": "会话中间件。",
   "main": "index.js",
-  "author": "yutent",
+  "author": "yutent <yutent.io@gmail.com>",
   "keywords": ["fivejs", "controller", "http"],
   "repository": "https://github.com/bytedo/gmf.session.git",
   "license": "MIT"
