@@ -1,11 +1,19 @@
 {
   "name": "@gm5/session",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "会话中间件。",
   "main": "index.js",
   "author": "yutent <yutent.io@gmail.com>",
-  "keywords": ["fivejs", "controller", "http"],
+  "keywords": [
+    "fivejs",
+    "session",
+    "http"
+  ],
+  "dependencies": {
+    "crypto.js": "^2.0.2",
+    "ioredis": "^4.17.3"
+  },
   "repository": "https://github.com/bytedo/gmf.session.git",
   "license": "MIT"
 }
