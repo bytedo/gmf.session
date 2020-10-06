@@ -15,7 +15,7 @@ export const sessionPackage = {
     var session = this.get('session')
     // 这里只创建session的存储器, 而初始化操作在中间件中进行
     return new RedisStore(session)
-  },
+  }
 }
 
 // 会话中间件
