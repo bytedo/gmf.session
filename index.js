@@ -7,21 +7,15 @@
 import { uuid, sha1 } from 'crypto.js'
 
 import RedisStore from './lib/redis-store.js'
-import MemStore from './lib/mem-store.js'
 
 // 会话安装包
 export const sessionPackage = {
   name: 'session',
   install() {
     var session = this.get('session')
-
     // 这里只创建session的存储器, 而初始化操作在中间件中进行
-    if (session.type === 'redis') {
-      return new RedisStore(session)
-    } else {
-      return new MemStore(session)
-    }
-  }
+    return new RedisStore(session)
+  },
 }
 
 // 会话中间件

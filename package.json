@@ -1,6 +1,6 @@
 {
   "name": "@gm5/session",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "type": "module",
   "description": "会话中间件。",
   "main": "index.js",
